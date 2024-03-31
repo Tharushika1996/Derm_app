@@ -1,8 +1,8 @@
 tensorflow-cpu
-fastapi==0.95.1
-opencv-python==4.7.0.72
+fastapi
+opencv-python
 python-multipart
-protobuf==3.20.0
+protobuf
 uvicorn
 python-dotenv==1.0.0
 numpy
