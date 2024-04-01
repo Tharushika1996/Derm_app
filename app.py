@@ -1,10 +1,22 @@
 from os import getcwd
 
 from fastapi import FastAPI, UploadFile, File
+from starlette.middleware.cors import CORSMiddleware
+
 from utils.mongo_util import create_db, add_data, get_drugs_by_defect, client
 from utils.predict import predict
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # PATH_FILES = getcwd() + "/"
 
@@ -17,6 +29,7 @@ async def upload_file(file: UploadFile = File(...)):
         buffer.write(file.file.read())
 
     prediction, prediction_percentage = predict(image_path)
+    print(prediction, prediction_percentage)
 
     defect_collection, drug_collection = create_db(client)
     drugs = get_drugs_by_defect(drug_collection, prediction)
